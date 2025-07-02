@@ -1,0 +1,34 @@
+@startuml
+left to right direction
+
+actor Admin
+actor Lead
+actor Twilio
+actor "AI Service" as AIService
+
+rectangle "Automated Lead Qualification System" {
+    usecase "Add Lead" as AddLead
+    usecase "View Leads Dashboard" as ViewDashboard
+    usecase "Initiate Call" as InitiateCall
+    usecase "Play Greeting" as PlayGreeting
+    usecase "Capture Lead Response" as CaptureResponse
+    usecase "Process Voice Input" as ProcessVoice
+    usecase "Generate AI Response" as GenerateResponse
+    usecase "Qualify Lead" as QualifyLead
+    usecase "Update Lead Status" as UpdateLeadStatus
+}
+
+Admin -- AddLead
+Admin -- ViewDashboard
+Admin -- InitiateCall
+Admin -- UpdateLeadStatus
+
+InitiateCall -- Twilio
+PlayGreeting -- Twilio
+CaptureResponse -- Twilio
+ProcessVoice -- AIService
+GenerateResponse -- AIService
+
+QualifyLead -- Lead
+
+@enduml
