@@ -1,0 +1,31 @@
+@startuml
+actor Admin
+participant "System (Laravel)" as System
+participant Twilio
+participant "AI Service" as AI
+actor Lead
+
+Admin -> System: Request to initiate call
+System -> Twilio: Place call to Lead
+Twilio -> Lead: Call connects, play greeting (TTS)
+Lead -> Twilio: Voice response
+Twilio -> System: Send recorded audio
+System -> AI: Speech-to-text conversion
+AI --> System: Transcribed text
+System -> AI: Intent analysis & generate response
+AI --> System: AI-generated reply text
+System -> Twilio: Play reply (TTS)
+
+loop Conversation
+    Lead -> Twilio: Voice reply
+    Twilio -> System: Send recorded audio
+    System -> AI: Speech-to-text conversion
+    AI --> System: Transcribed text
+    System -> AI: Intent analysis & generate response
+    AI --> System: AI-generated reply text
+    System -> Twilio: Play reply (TTS)
+end
+
+System -> System: Update lead status (qualified/disqualified)
+System --> Admin: Show updated lead status
+@enduml
