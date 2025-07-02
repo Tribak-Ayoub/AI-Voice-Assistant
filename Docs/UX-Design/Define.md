@@ -1,0 +1,3 @@
+# **Define – Problem Statement**
+
+Sales assistants are currently required to manually contact each potential client to perform lead qualification through phone calls. This task, though straightforward, is highly repetitive and consumes a significant amount of time. The process often varies depending on who performs it, resulting in inconsistent outcomes. Moreover, it is susceptible to human error, delays in follow-up, and incomplete or inaccurate data recording. These inefficiencies contribute to missed opportunities and reduce overall productivity. The absence of an automated solution for voice-based lead qualification leads to wasted resources and hinders the ability of the sales team to focus on high-value interactions.
