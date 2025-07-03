@@ -1,0 +1,61 @@
+@startuml
+start
+
+:Receive audio from Asterisk;
+:Convert speech to text (STT);
+
+if (Is transcription valid?) then (Yes)
+  :Detect intent (Rule-based or ML);
+
+  partition "Intent Handling" {
+    if (Intent = "greeting") then (Yes)
+      :Generate GPT prompt to welcome lead;
+    elseif (Intent = "interested") then (Yes)
+      :Generate GPT prompt to offer appointment;
+    elseif (Intent = "not_interested") then (Yes)
+      :Generate GPT prompt to end politely;
+    elseif (Intent = "ask_question") then (Yes)
+      :Generate GPT prompt to answer;
+    elseif (Intent = "appointment_request") then (Yes)
+      :Generate GPT prompt to ask for date/time;
+    elseif (Intent = "provides_date") then (Yes)
+      :Store date, ask for time;
+    elseif (Intent = "provides_time") then (Yes)
+      :Store time, confirm appointment;
+    elseif (Intent = "confirms") then (Yes)
+      :Acknowledge and thank lead;
+    elseif (Intent = "rejects_time") then (Yes)
+      :Propose alternative slot;
+    elseif (Intent = "goodbye") then (Yes)
+      :Say goodbye and close;
+    elseif (Intent = "unclear_response") then (Yes)
+      :Ask user to clarify;
+    elseif (Intent = "silence") then (Yes)
+      :Re-prompt or fallback message;
+    else
+      :Fallback – ask for clarification;
+    endif
+  }
+
+  :Send prompt to GPT;
+  :Receive reply text;
+  :Convert reply to voice (TTS);
+  :Send audio reply to Asterisk;
+
+  :Log transcription & predicted intent;
+  :Notify admin for review (optional);
+  
+  if (Admin review done?) then (Yes)
+    :Update intent labels;
+    :Trigger model retraining (periodic/manual);
+  else (No)
+    :Continue with current model;
+  endif
+
+else (No)
+  :Prepare fallback TTS reply;
+  :Send fallback audio to Asterisk;
+endif
+
+stop
+@enduml

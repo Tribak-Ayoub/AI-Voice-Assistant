@@ -18,13 +18,18 @@ AI -> Asterisk: Send audio reply (TTS)
 Asterisk -> Lead: Play AI-generated reply
 
 loop Conversation
-Lead -> Asterisk: Voice reply
-Asterisk -> AI: Send audio
-AI -> AI: Transcribe + understand intent
-AI -> Asterisk: Send next TTS audio
-Asterisk -> Lead: Play AI-generated reply
+  Lead -> Asterisk: Voice reply
+  Asterisk -> AI: Send audio
+  AI -> AI: Transcribe + understand intent
+  AI -> Asterisk: Send next TTS audio
+  Asterisk -> Lead: Play AI-generated reply
 end
 
 AI -> Laravel: Update lead status
-Laravel --> Admin: Show updated lead status
+AI -> Laravel: Log transcription & predicted intent
+Laravel -> Admin: Notify new conversations for review
+Admin -> Laravel: Review and correct intents (optional)
+Laravel -> AI: Trigger model retraining (periodic/manual)
+
+Laravel --> Admin: Show updated lead status and analytics
 @enduml
