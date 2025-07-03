@@ -3,32 +3,36 @@ left to right direction
 
 actor Admin
 actor Lead
-actor Twilio
-actor "AI Service" as AIService
+actor "Asterisk PBX" as PBX
+actor "AI Microservice" as AIService
 
-rectangle "Automated Lead Qualification System" {
-    usecase "Add Lead" as AddLead
-    usecase "View Leads Dashboard" as ViewDashboard
-    usecase "Initiate Call" as InitiateCall
-    usecase "Play Greeting" as PlayGreeting
-    usecase "Capture Lead Response" as CaptureResponse
-    usecase "Process Voice Input" as ProcessVoice
-    usecase "Generate AI Response" as GenerateResponse
-    usecase "Qualify Lead" as QualifyLead
-    usecase "Update Lead Status" as UpdateLeadStatus
+rectangle "AI Call Qualification System" {
+usecase "Add Lead" as AddLead
+usecase "View Leads Dashboard" as ViewLeads
+usecase "Initiate Outbound Call" as InitiateCall
+usecase "Route Call via SIP" as RouteCall
+usecase "Capture Voice Response" as CaptureVoice
+usecase "Convert Speech to Text" as STT
+usecase "Recognize Intent" as DetectIntent
+usecase "Generate AI Reply" as GenReply
+usecase "Convert Text to Speech" as TTS
+usecase "Play Response to Lead" as PlayVoice
+usecase "Update Lead Status" as UpdateStatus
 }
 
 Admin -- AddLead
-Admin -- ViewDashboard
+Admin -- ViewLeads
 Admin -- InitiateCall
-Admin -- UpdateLeadStatus
+Admin -- UpdateStatus
 
-InitiateCall -- Twilio
-PlayGreeting -- Twilio
-CaptureResponse -- Twilio
-ProcessVoice -- AIService
-GenerateResponse -- AIService
-
-QualifyLead -- Lead
+InitiateCall -- PBX
+RouteCall -- PBX
+CaptureVoice -- PBX
+CaptureVoice -- Lead
+STT -- AIService
+DetectIntent -- AIService
+GenReply -- AIService
+TTS -- AIService
+PlayVoice -- PBX
 
 @enduml

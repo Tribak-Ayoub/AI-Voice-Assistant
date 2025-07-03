@@ -1,31 +1,30 @@
 @startuml
 actor Admin
-participant "System (Laravel)" as System
-participant Twilio
-participant "AI Service" as AI
+participant "Laravel System" as Laravel
+participant "Asterisk PBX" as Asterisk
+participant "AI Microservice (Python)" as AI
 actor Lead
 
-Admin -> System: Request to initiate call
-System -> Twilio: Place call to Lead
-Twilio -> Lead: Call connects, play greeting (TTS)
-Lead -> Twilio: Voice response
-Twilio -> System: Send recorded audio
-System -> AI: Speech-to-text conversion
-AI --> System: Transcribed text
-System -> AI: Intent analysis & generate response
-AI --> System: AI-generated reply text
-System -> Twilio: Play reply (TTS)
+Admin -> Laravel: Request to initiate call
+Laravel -> Asterisk: Trigger outbound SIP call
+Asterisk -> Lead: Dial and connect
+Asterisk -> Lead: Play greeting (TTS)
+Lead -> Asterisk: Voice response
+Asterisk -> AI: Send recorded audio or stream
+
+AI -> AI: Speech-to-text (STT)
+AI -> AI: Intent detection & GPT response
+AI -> Asterisk: Send audio reply (TTS)
+Asterisk -> Lead: Play AI-generated reply
 
 loop Conversation
-    Lead -> Twilio: Voice reply
-    Twilio -> System: Send recorded audio
-    System -> AI: Speech-to-text conversion
-    AI --> System: Transcribed text
-    System -> AI: Intent analysis & generate response
-    AI --> System: AI-generated reply text
-    System -> Twilio: Play reply (TTS)
+Lead -> Asterisk: Voice reply
+Asterisk -> AI: Send audio
+AI -> AI: Transcribe + understand intent
+AI -> Asterisk: Send next TTS audio
+Asterisk -> Lead: Play AI-generated reply
 end
 
-System -> System: Update lead status (qualified/disqualified)
-System --> Admin: Show updated lead status
+AI -> Laravel: Update lead status
+Laravel --> Admin: Show updated lead status
 @enduml
