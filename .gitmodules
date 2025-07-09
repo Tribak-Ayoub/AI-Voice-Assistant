@@ -1,0 +1,6 @@
+[submodule "AI-Call-Assistant/ai-lead-backend-laravel"]
+	path = AI-Call-Assistant/ai-lead-backend-laravel
+	url = https://github.com/Tribak-Ayoub/ai-lead-backend-laravel.git
+[submodule "AI-Call-Assistant/ai-lead-ai-service-python"]
+	path = AI-Call-Assistant/ai-lead-ai-service-python
+	url = https://github.com/Tribak-Ayoub/ai-lead-ai-service-python.git
