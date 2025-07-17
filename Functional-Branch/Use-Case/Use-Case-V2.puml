@@ -1,0 +1,41 @@
+@startuml
+left to right direction
+
+actor Admin
+actor Lead
+actor "Asterisk PBX"
+actor "AI Microservice"
+
+rectangle "AI Call Qualification System" {
+
+  usecase "Add Lead"
+  usecase "View Leads Dashboard"
+  usecase "Initiate Outbound Call"
+  usecase "Route Call via SIP"
+  usecase "Capture Voice Response"
+  usecase "Convert Speech to Text"
+  usecase "Recognize Intent"
+  usecase "Generate AI Reply"
+  usecase "Convert Text to Speech"
+  usecase "Play Response to Lead"
+  usecase "Update Lead Status"
+
+}
+
+Admin -- "Add Lead"
+Admin -- "View Leads Dashboard"
+Admin -- "Initiate Outbound Call"
+Admin -- "Update Lead Status"
+
+Lead -- "Capture Voice Response"
+
+"Asterisk PBX" -- "Route Call via SIP"
+"Asterisk PBX" -- "Capture Voice Response"
+"Asterisk PBX" -- "Play Response to Lead"
+
+"AI Microservice" -- "Convert Speech to Text"
+"AI Microservice" -- "Recognize Intent"
+"AI Microservice" -- "Generate AI Reply"
+"AI Microservice" -- "Convert Text to Speech"
+
+@enduml

@@ -1,0 +1,156 @@
+classDiagram
+    class Campaign {
+        -int id
+        -string name
+        -string description
+        -boolean isActive
+    }
+
+    class Lead {
+        -int id
+        -string name
+        -string phoneNumber
+        -LeadStatus status
+        -string qualification
+        -datetime lastCallAt
+        -int callAttempts
+    }
+
+    class CallSession {
+        -int id
+        -datetime startTime
+        -datetime endTime
+        -string outcome
+        -CallStatus status
+    }
+
+    class CallQueue {
+        -int id
+        -Priority priority
+        -datetime scheduledTime
+        -QueueStatus status
+        -int retryCount
+        -int maxRetries
+    }
+
+    class ConversationSummary {
+        -int id
+        -string[] keyIntents
+        -string finalResponse
+        -string qualificationNotes
+        -float overallSentiment
+    }
+
+    class Intent {
+        -int id
+        -string name
+        -string description
+        -string category
+        -string[] keywords
+        -string[] phrases
+        -float confidenceThreshold
+        -boolean isActive
+        -IntentSource source
+        -int usageCount
+    }
+
+    class ConversationTurn { 
+        -int id
+        -int turnNumber
+        -string transcript
+        -int detectedIntentId
+        -float confidence
+        -string aiResponse
+        -string audioFilePath
+        -boolean isUserMessage
+        -boolean needsReview
+    }
+
+    class IntentTraining {
+        -int id
+        -string trainingPhrase
+        -boolean isPositive
+        -TrainingSource source
+    }
+
+    class Notification {
+        -int id
+        -string type
+        -string notifiable_type
+        -int    notifiable_id
+        -json   data
+    }
+
+    class LeadStatus {
+        <<enumeration>>
+        NEW
+        CONTACTED
+        QUALIFIED
+        DISQUALIFIED
+        APPOINTMENT_SET
+        CLOSED
+    }
+
+    class CallStatus {
+        <<enumeration>>
+        SCHEDULED
+        DIALING
+        RINGING
+        ANSWERED
+        BUSY
+        NO_ANSWER
+        FAILED
+        COMPLETED
+    }
+
+    class QueueStatus {
+        <<enumeration>>
+        PENDING
+        PROCESSING
+        COMPLETED
+        FAILED
+        CANCELLED
+    }
+
+    class Priority {
+        <<enumeration>>
+        LOW
+        MEDIUM
+        HIGH
+        URGENT
+    }
+
+    class IntentSource {
+        <<enumeration>>
+        ADMIN_DEFINED
+        AI_DISCOVERED
+        MANUAL_TRAINING
+        AUTO_LEARNED
+    }
+
+    class TrainingSource {
+        <<enumeration>>
+        ADMIN_MANUAL
+        CONVERSATION_REVIEW
+        FAILED_CLASSIFICATION
+        BULK_IMPORT
+    }
+
+    %% Relationships
+    Intent "1" -- "1" Campaign : belongs to
+    Lead "1" -- "1" Campaign : targeted by
+    Lead "1" -- "0..*" CallSession : has
+    Lead "1" -- "0..*" CallQueue : queued in
+    CallSession "1" -- "0..1" ConversationSummary : summarized by
+    CallSession "1" -- "0..*" ConversationTurn : contains
+    ConversationTurn "1" -- "0..1" Intent : classified as
+    Intent "1" -- "0..*" IntentTraining : trained with
+    CallSession "1" -- "0..*" Notification : logs
+
+    %% Composition relationships
+    Lead *-- LeadStatus : has status
+    CallSession *-- CallStatus : has status
+    CallQueue *-- Priority : has priority
+    CallQueue *-- QueueStatus : has status
+    Intent *-- IntentSource : has source
+    IntentTraining *-- TrainingSource : has source
