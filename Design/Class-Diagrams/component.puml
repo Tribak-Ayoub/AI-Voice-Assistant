@@ -1,0 +1,25 @@
+@startuml
+
+package "Téléphonie" {
+  [Asterisk Server]
+}
+
+package "Service IA" {
+  [FastAPI Microservice\n(STT / NLP / TTS)]
+}
+
+package "Backend" {
+  [Laravel Backend\n(Business Logic)]
+  [PostgreSQL Database]
+}
+
+package "Interface Utilisateur" {
+  [Vue.js Dashboard\n(Client & Admin)]
+}
+
+[Asterisk Server] --> [FastAPI Microservice\n(STT / NLP / TTS)]
+[FastAPI Microservice\n(STT / NLP / TTS)] --> [Laravel Backend\n(Business Logic)]
+[Laravel Backend\n(Business Logic)] --> [PostgreSQL Database]
+[Vue.js Dashboard\n(Client & Admin)] --> [Laravel Backend\n(Business Logic)]
+
+@enduml

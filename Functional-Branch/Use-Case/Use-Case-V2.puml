@@ -1,41 +1,36 @@
 @startuml
 left to right direction
+skinparam packageStyle rectangle
 
-actor Admin
-actor Lead
-actor "Asterisk PBX"
-actor "AI Microservice"
+actor "Admin (Propriétaire de l'app)" as Admin
+actor "Client (Entreprise abonnée)" as Client
 
-rectangle "AI Call Qualification System" {
+rectangle "Système IA de Qualification des Leads" {
 
-  usecase "Add Lead"
-  usecase "View Leads Dashboard"
-  usecase "Initiate Outbound Call"
-  usecase "Route Call via SIP"
-  usecase "Capture Voice Response"
-  usecase "Convert Speech to Text"
-  usecase "Recognize Intent"
-  usecase "Generate AI Reply"
-  usecase "Convert Text to Speech"
-  usecase "Play Response to Lead"
-  usecase "Update Lead Status"
-
+  usecase "Gérer les clients" as UC1
+  usecase "Gérer les abonnements et paiements" as UC2
+  usecase "Créer et gérer les campagnes" as UC3
+  usecase "Gérer des leads" as UC4
+  usecase "Superviser les appels en temps réel" as UC5
+  usecase "Accéder au tableau de bord Admin" as UC6
+  usecase "Consulter les appels" as UC7
+  usecase "Initier un appel sortant" as UC8
+  usecase "Accéder au tableau de bord Client" as UC9
+  usecase "Consulter les statuts" as UC10
 }
 
-Admin -- "Add Lead"
-Admin -- "View Leads Dashboard"
-Admin -- "Initiate Outbound Call"
-Admin -- "Update Lead Status"
+' === Associations ===
+Admin -- UC1
+Admin -- UC2
+Admin -- UC6
 
-Lead -- "Capture Voice Response"
+Client -- UC3
+Client -- UC4
+Client -- UC5
 
-"Asterisk PBX" -- "Route Call via SIP"
-"Asterisk PBX" -- "Capture Voice Response"
-"Asterisk PBX" -- "Play Response to Lead"
+Client -- UC9
+Client -- UC7
+Client -- UC8
 
-"AI Microservice" -- "Convert Speech to Text"
-"AI Microservice" -- "Recognize Intent"
-"AI Microservice" -- "Generate AI Reply"
-"AI Microservice" -- "Convert Text to Speech"
-
+UC4 -- UC10 : <<include>>
 @enduml
